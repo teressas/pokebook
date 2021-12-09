@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,25 +51,27 @@ public class HomeController {
 			return "index.jsp";
 		} else {
 			expenseService.addExpense(newExpense);
-			return "redirect:/";
+			return "redirect:/expenses";
 		}
 	}
 	
-//	@GetMapping("/{id}")
-//	public String getOneExpense(@PathVariable("id")Long id, Model model) {
-//		Expense expense = expenseService.findOneExpense(id);
-//		model.addAttribute("expense", expense);
-//		return "editForm.jsp";
-//	}
-//	
-	//Edit
+	// Get One
+	@GetMapping("/{id}")
+	public String getOneExpense(@PathVariable("id")Long id, Model model) {
+		Expense expenses = expenseService.findOneExpense(id);
+		model.addAttribute("expenses", expenses);
+		return "showOneExpense.jsp";
+	}
+	
+	// Edit
 	@GetMapping("/edit/{id}")
 	public String editForm(@PathVariable("id") Long id, Model model) {
 		Expense expense = expenseService.findOneExpense(id);
 		model.addAttribute("expense", expense);
 		return "editForm.jsp";
 	}
-
+	
+	// Process Edit Form
 	@PutMapping("/edit/{id}")
 	public String processEditForm(@Valid @ModelAttribute("expense") Expense expense,
 			BindingResult result, @PathVariable("id") Long id) {
@@ -78,5 +81,12 @@ public class HomeController {
 			expenseService.editExpense(expense);
 			return "redirect:/expenses/edit/{id}";
 		}
+	}
+	
+	// Delete
+	@DeleteMapping("/delete/{id}")
+	public String processDeleteExpense(@PathVariable("id") Long id) {
+		expenseService.deleteExpense(id);
+		return "redirect:/expenses";
 	}
 }
