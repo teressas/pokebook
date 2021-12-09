@@ -19,9 +19,10 @@
 			<thead>
 				<tr>
 					<th>ID</th>
-					<th>Title</th>
+					<th>Expense</th>
 					<th>Vendor</th>
 					<th>Amount</th>
+					<th>Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -31,6 +32,7 @@
 						<td>${expense.title }</td>
 						<td>${expense.vendor }</td>
 						<td>${expense.amount }</td>
+						<td><a href="/expenses/edit/${expense.id }">Edit</a></td>
 					</tr>
 				</c:forEach>
 
@@ -40,9 +42,9 @@
 		<div>
 			<h2>Track An Expense:</h2>
 
-			<form:form action="/create" method="post" modelAttribute="newExpense" class="form">
+			<form:form action="/expenses/create" method="post" modelAttribute="newExpense" class="form">
 				<p>
-					<form:label path="title" class="form-label">Title</form:label>
+					<form:label path="title" class="form-label">Expense</form:label>
 					<form:errors path="title" class="text-danger"/>
 					<form:input path="title" type="text" class="form-control"/>
 				</p>
@@ -54,7 +56,7 @@
 				<p>
 					<form:label path="amount" class="form-label">Amount</form:label>
 					<form:errors path="amount" class="text-danger"/>
-					<form:input path="amount" type="number" class="form-control"/>
+					<form:input path="amount" type="double" class="form-control"/>
 				</p>
 				<button class="btn btn-primary">Submit</button>
 			</form:form>
